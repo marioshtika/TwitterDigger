@@ -1,0 +1,55 @@
+<?php
+// show all warning and errors
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// the maximum execution time, in seconds. If set to zero, no time limit is imposed.
+set_time_limit(0);
+
+// connect to mongo db
+$m = new MongoClient();
+
+// select a database
+$db = $m->twitter_db;
+
+// select a collection (analogous to a relational database's table)
+$collection = $db->TwitterDigger;
+
+// find everything in the collection
+$documents = $collection->find();
+
+// differenct statistics variables
+$allTweets = 0;
+$tweetsInEnglish = 0;
+
+// iterate through the results
+foreach ($documents as $tweet) {
+	// count all tweets
+	$allTweets++;
+
+	// remove of non english tweets
+	if($tweet['lang'] == 'en') {
+		// count tweets in english
+		$tweetsInEnglish++;
+	}
+
+
+
+	if($allTweets > 200) {
+		break;
+	}
+/*
+	echo '<pre>';
+	var_dump($tweet);
+	echo '</pre>';
+	exit;
+*/
+	// echo $tweet["text"] . '<br />';
+}
+
+// Different Statistics
+echo '<strong>Different Statistics</strong><br /><br />';
+echo 'All tweets: <strong>'.$allTweets.'</strong><br />';
+echo 'Tweets in english: <strong>'.$tweetsInEnglish.'</strong><br />';
+
+?>
