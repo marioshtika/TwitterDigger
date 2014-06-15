@@ -77,11 +77,10 @@ foreach ($documents as $tweet) {
 		}
 	}
 	
-/*
+
 		if($allTweets == 3) {
 			break;
 		}
-*/
 }
 
 
