@@ -1,4 +1,25 @@
+<h1>Named Entities</h1>
+<hr />
+<div class="Table">
+	
+<?php
+echo "Prepare Named Entities table: <strong>ok</strong><br />";
 
+echo '<hr />';
+
+// connect to mongo db
+$m = new MongoClient();
+
+// select a database
+$db = $m->twitter_db;
+
+// select a collection (analogous to a relational database's table)
+$collection = $db->NamedEntities;
+
+// clean table (remove all documents)
+$collection->remove();
+?>
+	
 <?php
 /*
  * Copyright (c) 2008, ClearForest Ltd.
@@ -232,9 +253,31 @@ function simple_stop($parser, $element_name) {
 		 */
 		if ($simple_l1_tag == "CalaisSimpleOutputFormat")
 		{
-                    echo "NAME= ".$element["name"]."////";
-                    echo "TYPE=".$element["type"]."////";
-                    echo "TIMES MENTIONED:".$element["repeat"]."///\n<br>\n";
+			?>
+			<div class="Row">
+				<div class="Cell">
+					<p>entity: <strong><?php echo $element["name"];?></strong></p>
+				</div>
+				<div class="Cell">
+					<p>type: <strong><?php echo $element["type"];?></strong></p>
+				</div>
+				<div class="Cell">
+					<p>mentioned: <strong><?php echo $element["repeat"];?></strong></p>
+				</div>
+			</div>
+			<?php
+			
+			// connect to mongo db
+			$m = new MongoClient();
+
+			// select a database
+			$db = $m->twitter_db;
+
+			// select a collection (analogous to a relational database's table)
+			$collection = $db->NamedEntities;
+			
+			$collection->insert($element);
+			
 			//echo "Found element of type ".$element["type"];
 			//echo " with name ".$element["name"];
 			//echo " repeated ".$element["repeat"]." times\n<br>\n"; 	
@@ -267,3 +310,4 @@ function simple_char($parser, $data) {
 }
 
 ?>
+</div>
